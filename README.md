@@ -41,4 +41,4 @@ gender, passenger class, and age.
    streamlit run dashboard.py
 
 ## 👨‍💻 Author
-**Masood** — 3rd year CSE-DS student at BIT Bangalore
+**Mohammed Masood** — 3rd year CSE-DS student at BIT Bangalore

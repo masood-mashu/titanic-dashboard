@@ -91,3 +91,46 @@ st.warning("⚠️ Overall survival rate was only 38.4% — more than half of pa
 st.markdown("---")
 st.subheader("📁 Raw Data")
 st.dataframe(filtered_df)
+
+# ---- SURVIVAL PREDICTOR ----
+st.markdown("---")
+st.subheader("🤖 Would YOU have survived the Titanic?")
+st.write("Enter your details and find out!")
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    user_pclass = st.selectbox("Passenger Class", [1, 2, 3])
+
+with col2:
+    user_sex = st.selectbox("Gender", ["male", "female"])
+
+with col3:
+    user_age = st.slider("Age", 1, 80, 25)
+
+# Train a simple ML model
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.preprocessing import LabelEncoder
+
+# Prepare data
+ml_df = df.copy()
+le = LabelEncoder()
+ml_df['Sex'] = le.fit_transform(ml_df['Sex'])
+
+features = ['Pclass', 'Sex', 'Age']
+X = ml_df[features]
+y = ml_df['Survived']
+
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X, y)
+
+# Predict
+user_sex_encoded = 0 if user_sex == "female" else 1
+prediction = model.predict([[user_pclass, user_sex_encoded, user_age]])
+probability = model.predict_proba([[user_pclass, user_sex_encoded, user_age]])
+
+if st.button("🔮 Predict my survival!"):
+    if prediction[0] == 1:
+        st.success(f"✅ You would have SURVIVED! Survival probability: {round(probability[0][1]*100, 1)}%")
+    else:
+        st.error(f"❌ You would NOT have survived! Survival probability: {round(probability[0][1]*100, 1)}%")

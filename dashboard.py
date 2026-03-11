@@ -154,7 +154,7 @@ def load_data():
 df = load_data()
 
 # ── ML MODEL ──────────────────────────────────────────────────────────────────
-@st.cache_resource
+@st.cache_resource(hash_funcs={pd.DataFrame: lambda x: None})
 def train_model(df):
     ml_df = df.copy()
     le = LabelEncoder()

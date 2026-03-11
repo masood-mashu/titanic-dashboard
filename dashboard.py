@@ -447,7 +447,7 @@ if st.button("🔮  Predict My Survival"):
 st.markdown("<br/>", unsafe_allow_html=True)
 with st.expander("📁 View Raw Data"):
     st.dataframe(
-        filtered_df.style.applymap(
+        filtered_df.style.map(
             lambda v: 'color: #00f5c4' if v == 1 else 'color: #ff4d6d' if v == 0 else '',
             subset=['Survived']
         ),
